@@ -10,6 +10,7 @@ cache: pip
 env:
   - DJANGO_VERSION=1.9
   - DJANGO_VERSION=1.10
+  - DJANGO_VERSION=1.11
 services: postgresql
 addons:
   postgresql: '9.4'
