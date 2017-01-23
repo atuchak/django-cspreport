@@ -1,3 +1,5 @@
+import os
+
 SECRET_KEY = '123'
 
 INSTALLED_APPS = ['csp_report']
@@ -14,3 +16,15 @@ DATABASES = {
 }
 
 ROOT_URLCONF = ''
+
+if 'TRAVIS' in os.environ:
+    DATABASES = {
+        'default': {
+            'ENGINE':   'django.db.backends.postgresql_psycopg2',
+            'NAME':     'travisci',
+            'USER':     'postgres',
+            'PASSWORD': '',
+            'HOST':     'localhost',
+            'PORT':     '',
+        }
+    }
