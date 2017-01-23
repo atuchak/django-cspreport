@@ -1,6 +1,5 @@
 language: python
 python:
-  - "2.7"
   - "3.4"
   - "3.5"
 sudo: false
@@ -9,9 +8,12 @@ branches:
   - master
 cache: pip
 env:
-  - DJANGO_VERSION=1.8.17
-  - DJANGO_VERSION=1.9.12
+  - DJANGO_VERSION=1.8
+  - DJANGO_VERSION=1.9
   - DJANGO_VERSION=1.10
+services: postgresql
+before_script:
+  - psql -c "CREATE DATABASE travisci;" -U postgres
 install:
   - pip install pytest-django
   - pip install psycopg2
