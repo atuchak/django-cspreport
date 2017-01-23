@@ -11,6 +11,8 @@ env:
   - DJANGO_VERSION=1.9
   - DJANGO_VERSION=1.10
 services: postgresql
+addons:
+  postgresql: '9.4'
 before_script:
   - psql -c "CREATE DATABASE travisci;" -U postgres
   - psql -c "select version();" -U postgres
