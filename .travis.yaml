@@ -6,8 +6,9 @@ python:
 sudo: false
 cache: pip
 env:
-  - DJANGO_VERSION=1.7.8
-  - DJANGO_VERSION=1.8.2
+  - DJANGO_VERSION=1.8.17
+  - DJANGO_VERSION=1.9.12
+  - DJANGO_VERSION=1.10.8
 install:
   - pip install pytest pytest-django
   - pip install -q Django==$DJANGO_VERSION
