@@ -13,6 +13,7 @@ env:
 services: postgresql
 before_script:
   - psql -c "CREATE DATABASE travisci;" -U postgres
+  - psql -c "select version();" -U postgres
 install:
   - pip install pytest-django
   - pip install psycopg2
