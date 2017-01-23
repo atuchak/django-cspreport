@@ -3,7 +3,6 @@ import json
 import pytest
 
 from django.core.urlresolvers import reverse
-from django.test import Client
 
 from csp_report.models import CSPReport
 from csp_report.views import process_scp_report
@@ -12,8 +11,6 @@ from csp_report.views import process_scp_report
 @pytest.mark.urls('csp_report.tests.test_urls')
 @pytest.mark.django_db(transaction=True)
 def csp_report_view_test(client):
-    # client = Client()
-
     # wrong request method
     response = client.get(reverse('csp_report_view'))
     assert response.status_code == 405
