@@ -1,0 +1,47 @@
+# -*- coding: utf-8 -*-
+import json
+
+from django.http import HttpResponse
+from django.views.decorators.http import require_http_methods
+
+from csp_report.models import CSPReport
+
+
+def get_important_request_meta(headers, important_headers=None):
+    if not important_headers:
+        important_headers = [
+            'HTTP_USER_AGENT',
+            'HTTP_X_FORWARDED_FOR',
+            'HTTP_X_REAL_IP',
+            'REMOTE_ADDR',
+            'HTTP_ORIGIN',
+            'HTTP_CACHE_CONTROL',
+            'SERVER_NAME',
+        ]
+    return {k: v for k, v in headers.items() if k in important_headers}
+
+
+def process_scp_report(data, **kwargs):
+    request_meta = kwargs.get('request_meta', {})
+    report_data = dict(
+        host=kwargs.get('host', ''),
+        document_uri=data['document-uri'],
+        blocked_uri=data['blocked-uri'],
+        referrer=data.get('referrer', ''),
+        body=data,
+        request_meta=get_important_request_meta(request_meta),
+    )
+
+    CSPReport.objects.create(**report_data)
+
+
+@require_http_methods(['POST'])
+def csp_report_view(request):
+    try:
+        data = json.loads(request.body.decode())['csp-report']
+        host = request.META.get('HTTP_HOST')
+        process_scp_report(data, host=host, request_meta=dict(request.META))
+    except KeyError:
+        return HttpResponse(status=422)
+
+    return HttpResponse(content='ok')
