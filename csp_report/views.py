@@ -2,6 +2,7 @@
 import json
 
 from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 
 from csp_report.models import CSPReport
@@ -36,6 +37,7 @@ def process_scp_report(data, **kwargs):
 
 
 @require_http_methods(['POST'])
+@csrf_exempt
 def csp_report_view(request):
     try:
         data = json.loads(request.body.decode())['csp-report']

@@ -10,7 +10,7 @@ setup(
   author='Anton Tuchak',
   author_email='anton.tuchak@gmail.com',
   url='https://github.com/atuchak/django-cspreport',
-  download_url='https://github.com/atuchak/django-cspreport/archive/0.1.0.tar.gz',
+  # download_url='https://github.com/atuchak/django-cspreport/archive/0.1.0.tar.gz',
   keywords=['Content-Security-Policy', 'csp', 'Django'],
   classifiers=[],
 )
