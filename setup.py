@@ -5,7 +5,7 @@ from setuptools import find_packages
 setup(
   name='django-cspreport',
   packages=find_packages(),
-  version='0.1.0',
+  version='0.1.1',
   description='Django app for handling reports from web browsers of violations of content security policy.',
   author='Anton Tuchak',
   author_email='anton.tuchak@gmail.com',

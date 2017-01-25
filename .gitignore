@@ -83,3 +83,6 @@ venv/
 ENV/
 env3/
 .env
+
+# Django project
+/static/*
