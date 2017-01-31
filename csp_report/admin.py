@@ -4,7 +4,7 @@ from csp_report.models import CSPReport
 
 
 class CSPReportAdmin(admin.ModelAdmin):
-    list_display = ('id', 'host', 'document_uri', 'blocked_uri', 'date', )
+    list_display = ('id', 'host', 'document_uri', 'date', 'short_blocked_uri', )
     ordering = ['-id', ]
     list_filter = ('host', 'date', )
 
