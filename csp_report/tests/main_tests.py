@@ -4,8 +4,8 @@ import pytest
 
 from django.core.urlresolvers import reverse
 
-from csp_report.models import CSPReport
-from csp_report.views import process_scp_report
+from csp_report.models import CSPReport, CleanedCSPReport, CSPReportFilter
+from csp_report.utils import process_scp_report
 
 
 @pytest.mark.urls('csp_report.tests.test_urls')
@@ -46,3 +46,30 @@ def process_csp_report_test():
     assert report.host == 'test_host'
     assert report.referrer == 'referrer'
     assert report.body == data
+
+
+@pytest.mark.urls('csp_report.tests.test_urls')
+@pytest.mark.django_db(transaction=True)
+def csp_filter_empty_test(client):
+    response = client.post(
+        reverse('csp_report_view'),
+        data=json.dumps({'csp-report': {'document-uri': '/d-uri', 'blocked-uri': 'gsa://onpageload'}}),
+        content_type='application/json',
+    )
+    assert response.status_code == 200
+    assert CSPReport.objects.count() == 1
+    assert CleanedCSPReport.objects.count() == 1
+
+
+@pytest.mark.urls('csp_report.tests.test_urls')
+@pytest.mark.django_db(transaction=True)
+def csp_filter_startswith_test(client):
+    CSPReportFilter.objects.create(filter_type='startswith', value='gsa://onpageload')
+    response = client.post(
+        reverse('csp_report_view'),
+        data=json.dumps({'csp-report': {'document-uri': '/d-uri', 'blocked-uri': 'gsa://onpageload'}}),
+        content_type='application/json',
+    )
+    assert response.status_code == 200
+    assert CSPReport.objects.count() == 1
+    assert CleanedCSPReport.objects.count() == 0
